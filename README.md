@@ -17,3 +17,9 @@
 - git config --global core.editor "'C:\Program Files\Notepad\notepad.exe' -multiInst -notabbar -nosession -noPlugin"
 - git remote add origin https://github.com/khiemld/CanApp-be.git
 - git remote show origin
+- git push -f origin master
+ 
+
+## Config TypeSrcipt
+- tsc --init
+- reference: https://www.typescriptlang.org/tsconfig
