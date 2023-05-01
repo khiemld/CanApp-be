@@ -22,4 +22,8 @@
 
 ## Config TypeSrcipt
 - tsc --init
-- reference: https://www.typescriptlang.org/tsconfig
+
+#Reference:
+- https://www.typescriptlang.org/tsconfig
+- http://expressjs.com/en/resources/middleware/morgan.html
+- https://github.com/winstonjs/winston
