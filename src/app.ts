@@ -7,7 +7,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { Logger } from "@core/utils";
 import { errorMiddleware } from "@core/middleware";
-
+import bodyParser from "body-parser";
 
 
 class App{
@@ -20,9 +20,11 @@ class App{
         this.port = process.env.PORT || 5000;
         this.production = process.env.NODE_ENV == 'production' ? true : false;
 
-        this.initializeRoutes(routes);
+        
         this.connectToDatabase();
         this.initializeMiddleware();
+        this.initializeRoutes(routes);
+        this.initialMiddlewareError();
     }
 
     private initializeRoutes(routes : Route[]){
@@ -42,7 +44,17 @@ class App{
             this.app.use(cors({origin: true, credentials: true}));
         }
 
-        this.app.use(errorMiddleware)
+        
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({extended:true}));
+        //this.app.use(bodyParser.urlencoded({ extended: false }));
+        //this.app.use(bodyParser.json());
+        
+
+    }
+
+    private initialMiddlewareError(){
+        this.app.use(errorMiddleware);
     }
 
     private connectToDatabase(){
