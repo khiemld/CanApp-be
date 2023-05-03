@@ -11,12 +11,13 @@ export default class AuthController{
     public login = async (req: Request, res: Response, next: NextFunction)=>{
         try{
             const model : LoginDto = req.body;
-            const tokenData : TokenData= await this.authService.login(model);
-            // res.status(201).json({
-            //     error: false,
-            //     result: "Register successfully"
-            // });
-            res.status(201).json(tokenData);
+            const user= await this.authService.login(model);
+           
+            res.status(201).json({
+                error: false,
+                message: "Login successfully",
+                user: user
+            });
         }
         catch(error){
             // res.status(409).json({

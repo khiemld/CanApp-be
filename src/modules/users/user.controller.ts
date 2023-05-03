@@ -12,11 +12,11 @@ export default class UsersController{
         try{
             const model : RegisterDto = req.body;
             const tokenData : TokenData= await this.userService.createUser(model);
-            // res.status(201).json({
-            //     error: false,
-            //     result: "Register successfully"
-            // });
-            res.status(201).json(tokenData);
+            res.status(201).json({
+                error: false,
+                result: "Register successfully"
+            });
+            //res.status(201).json(tokenData);
         }
         catch(error){
             // res.status(409).json({
@@ -55,7 +55,11 @@ export default class UsersController{
             const model : RegisterDto = req.body;
             const userId : string = req.params.id;
             const user = await this.userService.updateUser(userId, model);
-            res.status(200).json(user);
+            res.status(200).json({
+                error: false,
+                message: "Update successfully",
+                user: user
+            });
         }
         catch(error){
             next(error);

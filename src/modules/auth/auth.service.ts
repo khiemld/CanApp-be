@@ -14,7 +14,7 @@ import { IUser, UserSchema, UsersRoute } from "@modules/users";
 class AuthService{
     public userSchema = UserSchema;
 
-    public async login(model:LoginDto) : Promise<TokenData>{
+    public async login(model:LoginDto) : Promise<IUser>{
         if(isEmptyObject(model)){
             throw new HttpException(400, 'Model is empty');
         }
@@ -31,7 +31,7 @@ class AuthService{
             throw new HttpException(400, 'Credential is not valid');
         }
 
-        return this.createToken(user);
+        return user;
     }
 
     private createToken(user : IUser) : TokenData{
