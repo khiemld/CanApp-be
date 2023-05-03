@@ -9,7 +9,7 @@ import { permittedCrossDomainPolicies } from "helmet";
 import jwt from 'jsonwebtoken';
 import LoginDto from "./auth.dto";
 
-import { IUser, UserSchema } from "@modules/users";
+import { IUser, UserSchema, UsersRoute } from "@modules/users";
 
 class AuthService{
     public userSchema = UserSchema;
@@ -19,7 +19,7 @@ class AuthService{
             throw new HttpException(400, 'Model is empty');
         }
 
-        const user = await this.userSchema.findOne({email: model.email});
+        const user = await this.userSchema.findOne({email: model.email}).exec();
 
         if(!user){
             throw new HttpException(409, `Your email ${model.email} is not exist`)
@@ -53,6 +53,7 @@ class AuthService{
 
         return user;
     }
+
 
 }
 

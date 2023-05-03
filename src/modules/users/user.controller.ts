@@ -4,6 +4,7 @@ import UserService from "./user.service";
 import { TokenData } from "@modules/auth";
 import { Logger } from "@core/utils";
 
+
 export default class UsersController{
     private userService = new UserService();
 
@@ -27,4 +28,39 @@ export default class UsersController{
             next(error);
         }
     };
+
+    public getUserById = async (req: Request, res: Response, next: NextFunction)=>{
+        try{
+            const userId : string = req.params.id;
+            const user = await this.userService.getUserById(userId);
+            res.status(200).json(user);
+        }
+        catch(error){
+            next(error);
+        }
+    };
+
+    public getAllUser = async (req: Request, res: Response, next: NextFunction)=>{
+        try{
+            const users = await this.userService.getAllUser();
+            res.status(200).json(users);
+        }
+        catch(error){
+            next(error);
+        }
+    };
+
+    public updateUser = async (req: Request, res: Response, next: NextFunction)=>{
+        try{
+            const model : RegisterDto = req.body;
+            const userId : string = req.params.id;
+            const user = await this.userService.updateUser(userId, model);
+            res.status(200).json(user);
+        }
+        catch(error){
+            next(error);
+        }
+    };
+
+
 }
