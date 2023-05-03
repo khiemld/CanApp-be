@@ -1,0 +1,51 @@
+swagger: "2.0"
+info:
+  description: "CAN App Api docs"
+  version: "1.0.0"
+  title: "Can App"
+  termOfService: "https://github.com/khiemld"
+  contact:
+    email: "khiemld.0204@gmail.com"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/license/mit/"
+host: "localhost:5000"
+basePath: "/api/v1"
+tags: 
+- name: "auth"
+  description: "Authentication APIs"
+- name: "users"
+  description: "Users APIs"
+schemes:
+- "http"
+paths:
+  /auth:
+    post:
+      tags:
+      - "auth"
+      summary: "Login API and Get Token"
+      description: "Input email and password"
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Login for user"
+        require: true
+        schema: 
+          $ref: "#/definitions/LoginDto" 
+      responses:
+        "400":
+          description: "Invalid input"
+
+definitions:
+    LoginDto:
+      type: "object"
+      properties:
+          email:
+            type: "string"
+          password:
+            type: "string"

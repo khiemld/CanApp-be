@@ -57,6 +57,16 @@ class UserService{
         if(user.email != model.email)
             throw new HttpException(400, 'Email not allow to update');
 
+        const checkPhoneExist = await this.userSchema.find({
+            $and:[{phone: {$eq:model.phone}}, {_id: {$ne: userId}}]
+        }).exec();
+
+
+        if(checkPhoneExist.length !== 0){
+            throw new HttpException(400, 'Phone is used by another user');
+        }
+
+        
         let updateUserById;
 
         if(model.password){
@@ -65,11 +75,15 @@ class UserService{
             updateUserById = await this.userSchema.findByIdAndUpdate(userId, {
                 ...model,
                 password: hashedPassword,
-            }).exec();
+            }, 
+            {new: true}
+            ).exec();
         }else{
             updateUserById = await this.userSchema.findByIdAndUpdate(userId, {
                 ...model,
-            }).exec();
+            }, 
+            {new: true}
+            ).exec();
         }
 
 

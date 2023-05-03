@@ -8,7 +8,8 @@ import helmet from "helmet";
 import { Logger } from "@core/utils";
 import { errorMiddleware } from "@core/middleware";
 import bodyParser from "body-parser";
-
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 class App{
     public app: express.Application;
@@ -25,6 +26,7 @@ class App{
         this.initializeMiddleware();
         this.initializeRoutes(routes);
         this.initialMiddlewareError();
+        this.initializeSwagger();
     }
 
     private initializeRoutes(routes : Route[]){
@@ -75,6 +77,12 @@ class App{
         this.app.listen(this.port, ()=>{
             Logger.info(`Server is listening on port ${this.port}`);
         });
+    }
+
+    private initializeSwagger(){
+        const swaggerDocument = YAML.load('./src/swagger.yaml');
+
+        this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 }
 
