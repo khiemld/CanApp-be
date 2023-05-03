@@ -9,7 +9,7 @@ import RegisterDto from "./dtos/register.dto";
 export default class UserRoute implements Route{
     public path = '/api/users';
     public router= Router();
-    private urlEncodeParser = bodyParser.urlencoded({extended: false});
+    //private urlEncodeParser = bodyParser.urlencoded({extended: false});
 
     public usersController = new UsersController();
 
