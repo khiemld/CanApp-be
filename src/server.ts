@@ -4,6 +4,7 @@ import App from "./app";
 import { validateEnv } from '@core/utils';
 import UserRoute from '@modules/users/user.route';
 import AuthRoute from '@modules/auth/auth.route';
+import { PlanRoute } from '@modules/plan';
 
 
 validateEnv();
@@ -11,7 +12,8 @@ validateEnv();
 const routes = [
     new IndexRoute(),
     new UserRoute(),
-    new AuthRoute()]
+    new AuthRoute(),
+    new PlanRoute]
     
 const app = new App(routes);
 
