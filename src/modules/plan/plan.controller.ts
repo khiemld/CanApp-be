@@ -25,6 +25,41 @@ export default class PlanController{
 
     }
 
+    public updatePlan = async(req: Request, res: Response, next: NextFunction) => {
+        try{
+            const model: CreatePlanDto = req.body;
+            const userId : string = req.params.user_id;
+            const planId : string = req.params.plan_id;
+            let plan = await this.planService.updatePlan(userId, planId, model);
+            res.status(201).json({
+                error: false,
+                message: 'Update Plan successfully',
+                plan: plan
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
+    public blockPlan = async(req: Request, res: Response, next: NextFunction) =>{
+        
+        try{
+            const userId : string = req.params.user_id;
+            const planId : string = req.params.plan_id;
+    
+            let plan = await this.planService.blockPlan(userId, planId);
+            res.status(201).json({
+                error: false,
+                message: 'Block plan successfully',
+                plan: plan
+            });
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
     public getAllPlans = async (req: Request, res: Response, next: NextFunction)=>{
         try{
             const plans = await this.planService.getAllPlans();
@@ -50,5 +85,6 @@ export default class PlanController{
             next(error);
         }
     }
+
 
 }

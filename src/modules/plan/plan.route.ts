@@ -22,10 +22,19 @@ export default class PlanRoute implements Route{
             validationMiddleware(CreatePlanDto, true),
             this.planController.createPlan);
 
+        //Block Plan
+        this.router.put(this.path + '/:user_id/:plan_id',
+            this.planController.blockPlan);
+
+        //Update Plan
+        this.router.put(this.path + '/update/:user_id/:plan_id', this.planController.updatePlan),
+
         //Get All Plans
         this.router.get(this.path, this.planController.getAllPlans);
         
         //Add Member
         this.router.put(this.path +'/members/:id', this.planController.addMember);
+
+
     }
 }

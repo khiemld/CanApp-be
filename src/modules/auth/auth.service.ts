@@ -25,12 +25,12 @@ class AuthService{
             throw new HttpException(409, `Your email ${model.email} is not exist`)
         }
 
-        const isMatchPassword = bcryptjs.compare(model.password, user.password);
+        const isMatchPassword = await bcryptjs.compare(model.password, user.password);
 
         if(!isMatchPassword){
-            throw new HttpException(400, 'Credential is not valid');
-        }
+            throw new HttpException(409, 'Password is not valid');
 
+        }
         return user;
     }
 
@@ -53,8 +53,6 @@ class AuthService{
 
         return user;
     }
-
-
 }
 
 

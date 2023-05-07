@@ -6,7 +6,7 @@ import { authMiddleware } from "@core/middleware";
 
 
 export default class AuthRoute implements Route{
-    public path = '/api/v1/auth';
+    public path = '/api/v1/login';
     public router= Router();
     //private urlEncodeParser = bodyParser.urlencoded({extended: false});
 
