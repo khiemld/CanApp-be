@@ -20,12 +20,10 @@ export default class AuthController{
             });
         }
         catch(error){
-            // res.status(409).json({
-            //     error: true,
-            //     result: "Register failed",
-            //     detail: `Your email already existed`
-            // });
-            // Logger.error(error);
+            res.status(409).json({
+                error: true,
+                message: "Login failed",
+            });
             next(error);
         }
     };
