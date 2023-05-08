@@ -23,6 +23,7 @@ export default class AuthController{
             res.status(409).json({
                 error: true,
                 message: "Login failed",
+                user: null
             });
             next(error);
         }
