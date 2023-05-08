@@ -20,7 +20,7 @@ export default class AuthController{
             });
         }
         catch(error){
-            res.status(409).json({
+            res.status(200).json({
                 error: true,
                 message: "Login failed",
                 user: null
