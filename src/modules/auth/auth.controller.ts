@@ -24,7 +24,6 @@ export default class AuthController{
                 error: true,
                 message: "Login failed",
             });
-            //next(error);
         }
     };
 

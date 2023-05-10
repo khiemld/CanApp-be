@@ -10,8 +10,10 @@ import { permittedCrossDomainPolicies } from "helmet";
 import jwt from 'jsonwebtoken';
 
 
-class UserService{
+class  UserService{
     public userSchema = UserSchema;
+
+
 
     public async createUser(model:RegisterDto) : Promise<TokenData>{
         if(isEmptyObject(model)){
@@ -104,10 +106,22 @@ class UserService{
         return user;
     }
 
+    public async getUserByEmail(email: string) : Promise<IUser>{
+        const user = await this.userSchema.findOne({email: email}).exec();
+
+        if(!user){
+            throw new HttpException(404, 'User is not found');
+        }
+
+        return user;
+    }
+
     public async getAllUser() : Promise<IUser[]>{
         const users = await this.userSchema.find().exec();
         return users;
     }
+
+    
 
     private createToken(user : IUser) : TokenData{
         const dataInToken: DataStoredInToken = {id: user._id};
