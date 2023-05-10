@@ -1,15 +1,19 @@
+import { IPlan } from "@modules/plan";
+
 export default interface ITask{
-    _id: String;
-    title: String;
-    description: String;
-    begin_Time: Date;
-    end_time:Date;
-    state: number;
+    _id: string;
+    title: string;
+    description: string;
+    plan: IPlan;
+    begin_Time: string;
+    end_time:string;
     members: IMember;
+    index: number;
 }
 
-export interface IState{
-    status: String;
+export interface ICategory{
+    name: string;
+    index: number;
 }
 
 export interface IMember{

@@ -10,23 +10,29 @@ const TaskSchema = new mongoose.Schema({
     description:{
         type: String
     },
+    plan:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'plan'
+    },
     beginTime: {
-        type: Date,
+        type: String,
         require: true,
-        default: Date.now
     },
     endTime: {
-        type: Date,
+        type: String,
         require: true
     },
-    state:{
-        type: Number,
-        default: 1
-    },
     members: [{
-        type:  mongoose.Schema.Types.ObjectId
-    }]
-
+        user:
+            {
+                type:  mongoose.Schema.Types.ObjectId,
+                ref: 'user'
+            }
+        }
+    ],
+    index: {
+        type: Number
+    }
 });
 
 export default mongoose.model<ITask & mongoose.Document>('task', TaskSchema);

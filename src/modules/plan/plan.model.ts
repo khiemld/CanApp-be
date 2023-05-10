@@ -27,6 +27,13 @@ const PlanSchema = new mongoose.Schema({
     members: [{
         userId: {
             type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+        }
+    }],
+    list: [{
+        listId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'listTask'
         }
     }],
     active: {

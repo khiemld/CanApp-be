@@ -1,4 +1,6 @@
-import { IUser } from "@modules/users";
+import { IListTask } from "@modules/listTask";
+
+
 
 export default interface IPlan{
     _id: string;
@@ -8,6 +10,7 @@ export default interface IPlan{
     beginTime: string;
     endTime: string;
     members: IMember[];
+    list: IList[];
     active: boolean;
 }
 
@@ -15,3 +18,6 @@ export interface IMember{
     userId: string;
 }
 
+export interface IList{
+    listId: string;
+}
