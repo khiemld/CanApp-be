@@ -98,18 +98,19 @@ class PlanService{
     public async getPlanById(idPlan: string) : Promise<Object>{
         const plan = await this.planSchema.findById(idPlan).exec();
 
-        if(!plan) {
-            throw new HttpException(409, 'Invalid Plan ID');
+        if(!plan){
+            throw new  HttpException(400, 'Plan does not exit');
         }
 
-        const planResult = await this.planSchema.findOne({_id: idPlan})
+        const planResult = await this.planSchema.findById(idPlan)
                                 .populate('manager')
-                                .populate('members.user_id')
-                                .populate('list.listId').exec();
+                                .populate('members._id')
+                                .exec();
         
         if(!planResult){
             throw new HttpException(409, 'Plan not found')
         }
+
         return planResult;
     }
 

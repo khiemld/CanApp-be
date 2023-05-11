@@ -8,6 +8,7 @@ import bcryptjs from 'bcryptjs';
 import IUser from "./user.interface";
 import { permittedCrossDomainPolicies } from "helmet";
 import jwt from 'jsonwebtoken';
+import UpdateDto from "./dtos/update.dto";
 
 
 class  UserService{
@@ -45,7 +46,7 @@ class  UserService{
         return this.createToken(createdUser);
     }
 
-    public async updateUser(userId: string, model:RegisterDto) : Promise<IUser>{
+    public async updateUser(userId: string, model:UpdateDto) : Promise<IUser>{
         if(isEmptyObject(model)){
             throw new HttpException(400, 'Model is empty');
         }
@@ -67,26 +68,15 @@ class  UserService{
         if(checkPhoneExist.length !== 0){
             throw new HttpException(400, 'Phone is used by another user');
         }
-
         
         let updateUserById;
 
-        if(model.password){
-            const salt = await bcryptjs.genSalt(10);
-            const hashedPassword = await bcryptjs.hash(model.password, salt);
-            updateUserById = await this.userSchema.findByIdAndUpdate(userId, {
-                ...model,
-                password: hashedPassword,
-            }, 
-            {new: true}
-            ).exec();
-        }else{
-            updateUserById = await this.userSchema.findByIdAndUpdate(userId, {
-                ...model,
-            }, 
-            {new: true}
-            ).exec();
-        }
+        updateUserById = await this.userSchema.findByIdAndUpdate(userId, {
+            ...model,
+        }, 
+        {new: true}
+        ).exec();
+        
 
 
        if(!updateUserById){

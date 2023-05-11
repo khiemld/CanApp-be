@@ -87,9 +87,9 @@ export default class PlanController{
         }
     }
 
-    public findById = async (req: Request, res: Response, next: NextFunction) => {
+    public findPlanById = async (req: Request, res: Response, next: NextFunction) => {
         try{
-            const planId : string = req.params.id;
+            const planId : string = req.params.plan_id;
             let plan = await this.planService.getPlanById(planId);
             res.status(201).json({
               error: false,
