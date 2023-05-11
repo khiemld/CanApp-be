@@ -73,12 +73,28 @@ export default class PlanController{
     public addMember = async (req: Request, res: Response, next: NextFunction) => {
         try{
             const model : AddMemberDto = req.body;
-            const planId : string = req.params.id;
-            let plan = await this.planService.addMember(planId, model);
+            const planId : string = req.params.plan_id;
+            const userId : string = req.params.user_id;
+            let plan = await this.planService.addMember(userId, planId, model);
             res.status(201).json({
                 error: false,
                 message: 'Add Member Successfully',
                 plan: plan
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
+    public findById = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const planId : string = req.params.id;
+            let plan = await this.planService.getPlanById(planId);
+            res.status(201).json({
+              error: false,
+              message: 'Get plan successfully',
+              plan: plan  
             })
         }
         catch(error){

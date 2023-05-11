@@ -41,16 +41,20 @@ class PlanService{
     }
 
     public async blockPlan(idLead: string, idProject: string ): Promise<IPlan>{
-         const plan = await this.getPlanById(idProject);
+        const plan = await this.planSchema.findById(idProject).exec();
 
-         if(plan.manager == idLead){
-             plan.active = false;
-         }
-         else{
-            throw new HttpException(403, 'You are not allowed to block plan');
-         }
-         return await plan;
-    }
+        if(!plan){
+            throw new  HttpException(400, 'Plan does not exit');
+        }
+
+        if(plan.manager === idLead){
+            plan.active = false;
+        }
+        else{
+           throw new HttpException(403, 'You are not allowed to block plan');
+        }
+        return await plan.save();
+   }
 
 
     public async updatePlan(idLead: string, idProject: string, model: CreatePlanDto ) : Promise<IPlan>{
@@ -86,41 +90,53 @@ class PlanService{
         return updateGroup;
     }
 
-    public async getPlanById(idPlan: string) : Promise<IPlan>{
-        const plan = await this.planSchema.findById(idPlan).exec();
-
-       if(!plan){
-            throw new  HttpException(400, 'Plan does not exit');
-       }
-
-       return  plan;
-    }
-
-    
     public async getAllPlans() : Promise<IPlan[]>{
         const plans = await this.planSchema.find().exec();
         return plans;
     }
 
-    public async addMember(idPlan: string, model:AddMemberDto) : Promise<IPlan>{
+    public async getPlanById(idPlan: string) : Promise<Object>{
         const plan = await this.planSchema.findById(idPlan).exec();
-        const user  = await this.userService.getUserByEmail(model.email);
-        
 
+        if(!plan) {
+            throw new HttpException(409, 'Invalid Plan ID');
+        }
+
+        const planResult = await this.planSchema.findOne({_id: idPlan})
+                                .populate('manager')
+                                .populate('members.user_id')
+                                .populate('list.listId').exec();
+        
+        if(!planResult){
+            throw new HttpException(409, 'Plan not found')
+        }
+        return planResult;
+    }
+
+    public async addMember(idLead: string, idPlan: string,  model:AddMemberDto) : Promise<IPlan>{
+        if(isEmptyObject(model)){
+            throw new HttpException(400, 'Model is empty');
+        }
+        const plan = await this.planSchema.findById(idPlan).exec();
+        //const user  = await this.userService.getUserByEmail(model.email);
+        const user = await this.userSchema.findOne({email: model.email})
+        
         if(!plan){
             throw new HttpException(409, 'Id Plan is not exist');
         }
-
+        if(plan.manager != idLead){
+            throw new HttpException(400, 'You are not allowed to add member');
+        }
         if(!user){
             throw new HttpException(409, 'User is not found');
         }
-        
 
-        if(!plan.members.some((member: IMember) => member.userId === user._id)){
+
+        if(plan.members.some((member: IMember) => member.userId === user._id)){
             throw new HttpException(400, 'Account has been a member of this group');
         }
 
-        plan.members.unshift({userId: user._id} as IMember);
+        plan.members.push(user._id);
 
         return await plan.save();
     }

@@ -6,7 +6,7 @@ import { HttpException } from '@core/exceptions';
 import { PlanSchema } from '@modules/plan';
 import { UserSchema } from '@modules/users';
 import { IList, IMember } from '@modules/plan/plan.interface';
-import { IPlan } from '@modules/task';
+
 import mongoose, { Query } from 'mongoose'
 
 class ListTaskService{

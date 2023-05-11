@@ -6,6 +6,7 @@ import UserRoute from '@modules/users/user.route';
 import AuthRoute from '@modules/auth/auth.route';
 import { PlanRoute } from '@modules/plan';
 import { ListRoute } from '@modules/listTask';
+import { TaskRoute } from '@modules/task';
 
 
 validateEnv();
@@ -15,7 +16,8 @@ const routes = [
     new UserRoute(),
     new AuthRoute(),
     new PlanRoute(),
-    new ListRoute()]
+    new ListRoute(),
+    new TaskRoute()]
     
 const app = new App(routes);
 
