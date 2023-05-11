@@ -17,7 +17,7 @@ export default class PlanRoute implements Route{
 
 
     private initializeRoutes(){
-        //Add user
+        //Add uPlan
         this.router.post(this.path + '/:id', 
             validationMiddleware(CreatePlanDto, true),
             this.planController.createPlan);
@@ -33,8 +33,7 @@ export default class PlanRoute implements Route{
         this.router.get(this.path, this.planController.getAllPlans);
         
         //Add Member
-        this.router.put(this.path +'/members/:id', this.planController.addMember);
-
+        this.router.put(this.path +'/members/:user_id/:plan_id', this.planController.addMember);
 
     }
 }

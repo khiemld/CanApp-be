@@ -4,11 +4,11 @@ export default interface ITask{
     _id: string;
     title: string;
     description: string;
-    plan: IPlan;
     begin_Time: string;
     end_time:string;
     members: IMember;
     index: number;
+    active: boolean;
 }
 
 export interface ICategory{
@@ -17,5 +17,5 @@ export interface ICategory{
 }
 
 export interface IMember{
-    user: String;
+    userId: String;
 }

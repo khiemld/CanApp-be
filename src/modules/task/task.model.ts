@@ -10,10 +10,6 @@ const TaskSchema = new mongoose.Schema({
     description:{
         type: String
     },
-    plan:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'plan'
-    },
     beginTime: {
         type: String,
         require: true,
@@ -23,7 +19,7 @@ const TaskSchema = new mongoose.Schema({
         require: true
     },
     members: [{
-        user:
+        userId:
             {
                 type:  mongoose.Schema.Types.ObjectId,
                 ref: 'user'
@@ -32,6 +28,10 @@ const TaskSchema = new mongoose.Schema({
     ],
     index: {
         type: Number
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
 });
 
