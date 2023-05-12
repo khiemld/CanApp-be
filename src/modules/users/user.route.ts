@@ -4,8 +4,9 @@ import UsersController from "./user.controller";
 import bodyParser from "body-parser";
 import validationMiddleware from "@core/middleware/validation.middleware";
 import RegisterDto from "./dtos/register.dto";
-
-
+import multer from "multer";
+import { getAnalytics } from "firebase/analytics";
+import firebase, { initializeApp } from 'firebase/app';
 export default class UserRoute implements Route{
     public path = '/api/v1/users';
     public router= Router();
@@ -34,5 +35,9 @@ export default class UserRoute implements Route{
 
         //Get all user
         this.router.get(this.path, this.usersController.getAllUser);
+
+        //Upload Image
+        const upload = multer({ storage: multer.memoryStorage() });
+        this.router.post(this.path + '/upload/:user_id', upload.single("avatar"),  this.usersController.uploadImage);
     }
 }

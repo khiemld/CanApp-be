@@ -10,12 +10,15 @@ import { errorMiddleware } from "@core/middleware";
 import bodyParser from "body-parser";
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
-
+import firebase, { initializeApp } from 'firebase/app';
+import config from "./config/firebase.config"
+import { getAnalytics } from "firebase/analytics";
 class App{
     public app: express.Application;
     public port: string | number;
     private production: boolean;
 
+    
     constructor(routes : Route[]){
         this.app = express();
         this.port = process.env.PORT || 5000;
@@ -27,6 +30,12 @@ class App{
         this.initializeRoutes(routes);
         this.initialMiddlewareError();
         this.initializeSwagger();
+        this.initializeFireBase();
+    }
+
+
+    private initializeFireBase(){
+        initializeApp(config.firebaseConfig);
     }
 
     private initializeRoutes(routes : Route[]){
@@ -34,7 +43,7 @@ class App{
             this.app.use('/', route.router);
         })
     }
-
+    
     private initializeMiddleware(){
         if(this.production){
             this.app.use(hpp());
