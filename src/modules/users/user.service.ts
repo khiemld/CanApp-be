@@ -111,8 +111,27 @@ class  UserService{
         return users;
     }
 
-    
+    public async uploadImage(userId : string, avatar: string) : Promise<IUser>{
+         const user = await this.userSchema.findById(userId).exec();
 
+         if(!user){
+            throw new HttpException(404, 'Invalid userId');
+         }
+
+         const updateUser = await this.userSchema.findByIdAndUpdate(
+            userId, 
+            {image: avatar},
+            {new: true}
+         ).exec();
+
+         if(!updateUser){
+            throw new HttpException(404, 'User is not found');
+         }
+
+         return updateUser;
+    }
+
+  
     private createToken(user : IUser) : TokenData{
         const dataInToken: DataStoredInToken = {id: user._id};
         const secret : string = process.env.JWT_TOKEN_SECRET!;
