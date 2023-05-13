@@ -33,11 +33,11 @@ class ListTaskService{
 
         const newList = new ListTaskSchema(
             {name: model.name,
+            plan: idPlan,
             index: plan.list.length},
         );
          
         await newList.save();
-
         plan.list.push(newList._id);
         
         await plan.save();

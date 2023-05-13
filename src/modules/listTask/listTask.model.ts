@@ -7,6 +7,10 @@ const ListTaskSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    plan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'plan'
+    },
     tasks: [
         {
             taskId: {

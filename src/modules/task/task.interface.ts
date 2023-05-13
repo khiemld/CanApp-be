@@ -4,6 +4,8 @@ export default interface ITask{
     _id: string;
     title: string;
     description: string;
+    plan: string;
+    column: string;
     begin_Time: string;
     end_time:string;
     members: IMember;

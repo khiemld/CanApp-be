@@ -10,6 +10,14 @@ const TaskSchema = new mongoose.Schema({
     description:{
         type: String
     },
+    plan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'plan'
+    },
+    column: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'listTask'
+    },
     beginTime: {
         type: String,
         require: true,
