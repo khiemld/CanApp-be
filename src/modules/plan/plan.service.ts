@@ -7,6 +7,7 @@ import UserSchema from '@modules/users/user.model'
 import UserService from '@modules/users/user.service'
 import AddMemberDto from "./dtos/addMember.dto";
 import { IUser } from "@modules/users";
+import mongoose from "mongoose"; 
 
 class PlanService{
     public planSchema = PlanSchema;
@@ -102,16 +103,55 @@ class PlanService{
             throw new  HttpException(400, 'Plan does not exit');
         }
 
-        const planResult = await this.planSchema.findById(idPlan)
-                                .populate('manager')
-                                .populate('members._id')
-                                .exec();
-        
-        if(!planResult){
-            throw new HttpException(409, 'Plan not found')
-        }
+       const result = await this.planSchema.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(idPlan)
+                } 
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'manager',
+                    foreignField: '_id',
+                    as: 'manager'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'members._id',
+                    foreignField: '_id',
+                    as: 'members'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'listtasks',
+                    localField: '_id',
+                    foreignField: 'plan',
+                    as: 'columns'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'tasks',
+                    localField: '_id',
+                    foreignField: 'plan',
+                    as: 'tasks'
+                }
+            },
+            
+       ]);
 
-        return planResult;
+       result[0].columns.forEach((column: {_id: any; tasks: any; }) => {
+            column.tasks = result[0].tasks.filter((c: { column: any; }) => c.column.toString() === column._id.toString())
+       });
+
+       delete result[0].tasks
+       delete result[0].list
+       delete result[0].__v
+       return result[0];
     }
 
     public async addMember(idLead: string, idPlan: string,  model:AddMemberDto) : Promise<IPlan>{
@@ -141,6 +181,7 @@ class PlanService{
 
         return await plan.save();
     }
+
 }
 
 export default PlanService;

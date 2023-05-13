@@ -36,6 +36,8 @@ class TaskService{
 
         const newTask = new TaskSchema(
             {title: model.title,
+             plan: idPlan,
+             column: idList,
              index: list.tasks.length
             }
         )

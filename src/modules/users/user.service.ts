@@ -140,6 +140,8 @@ class  UserService{
             token: jwt.sign(dataInToken, secret, {expiresIn: expireIn}),
         }
     }
+
+    
 }
 
 
