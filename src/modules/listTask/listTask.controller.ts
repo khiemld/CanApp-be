@@ -2,6 +2,9 @@ import CreatePlanDto from "@modules/plan/dtos/createPlan.dto";
 import ListTaskService from "./listTask.service";
 import { NextFunction, Request, Response } from "express";
 import AddListDto from "./dtos/addList.dto";
+import MoveTaskDto from "./dtos/moveTask.dto";
+import { isEmptyObject } from "@core/utils";
+import { HttpException } from "@core/exceptions";
 
 
 export default class ListTaskController{
@@ -23,4 +26,29 @@ export default class ListTaskController{
             next(error);
         }
     }
+
+    public moveTask = async(req: Request, res: Response, next: NextFunction) => {
+        try{
+            const model : MoveTaskDto = req.body;
+
+            if(isEmptyObject(model)){
+                throw new HttpException(409, 'Model is empty');
+            }
+
+            const indexMove : number = model.indexMove;
+            const fromId : string = model.fromId;
+            const toId : string = model.toId;
+            const taskId : string = model.idTask;
+            let task = await this.listTaskService.moveTask(indexMove, taskId, fromId, toId);
+            res.status(201).json({
+                error: false,
+                message: 'Move Task Successfully',
+                task: task
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
+    
 }

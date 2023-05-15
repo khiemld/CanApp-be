@@ -39,7 +39,7 @@ const PlanSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true,
-    }
+    },
 }); 
 
 export default mongoose.model<IPlan & mongoose.Document>('plan', PlanSchema);

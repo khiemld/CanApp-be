@@ -40,12 +40,12 @@ class TaskService{
              column: idList,
              index: list.tasks.length
             }
-        )
+        );
 
         await newTask.save();
 
-        list.tasks.push(newTask._id);
-
+        list.tasks.unshift(newTask._id);
+        
         await list.save();
 
         return newTask;

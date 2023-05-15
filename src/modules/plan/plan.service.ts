@@ -8,11 +8,15 @@ import UserService from '@modules/users/user.service'
 import AddMemberDto from "./dtos/addMember.dto";
 import { IUser } from "@modules/users";
 import mongoose from "mongoose"; 
+import { ListTaskSchema } from "@modules/listTask";
+import { ITask, TaskSchema } from "@modules/task";
 
 class PlanService{
     public planSchema = PlanSchema;
     public userService = new UserService();
     public userSchema = UserSchema;
+    public listTaskSchema = ListTaskSchema;
+    public taskSchema = TaskSchema;
 
     public async createPlan(idLead: string, model: CreatePlanDto): Promise<IPlan>{
     
@@ -154,6 +158,7 @@ class PlanService{
        return result[0];
     }
 
+
     public async addMember(idLead: string, idPlan: string,  model:AddMemberDto) : Promise<IPlan>{
         if(isEmptyObject(model)){
             throw new HttpException(400, 'Model is empty');
@@ -182,6 +187,8 @@ class PlanService{
         return await plan.save();
     }
 
+    
+       
 }
 
 export default PlanService;

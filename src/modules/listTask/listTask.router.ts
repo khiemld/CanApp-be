@@ -20,5 +20,8 @@ export default class ListRoute implements Route{
     private initializeRoutes(){
         //Add user
         this.router.post(this.path + '/add/:user_id/:plan_id', this.listTaskController.addList);
+
+        //Move task
+        this.router.put(this.path + '/move', this.listTaskController.moveTask);
     }
 }
