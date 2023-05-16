@@ -210,6 +210,7 @@ class PlanService{
 
         const newCol = new ListTaskSchema(
             {
+                _id: idCol,
                 name: col.name,
                 plan: col.plan,
                 tasks: col.tasks,
@@ -218,13 +219,12 @@ class PlanService{
         );
 
         newCol.save();
-
+        await this.listTaskSchema.findByIdAndDelete(idCol).exec();
         if(!newCol){
             throw new HttpException(409, 'Col not found');
         }
 
-        await this.listTaskSchema.findByIdAndDelete(idCol).exec();
-
+    
         plan.list.splice(indexMove, 0, {listId: newCol._id.toString()});
         plan.save();
 
@@ -257,8 +257,26 @@ class PlanService{
 
         return flag.includes(object2.toString());
     }
+
+
+    public async getUserPlan(idUser : string) : Promise<IPlan[]>{
+        const listPlan = await this.planSchema.find({
+            $or: [
+                {
+                    manager: {$eq: new mongoose.Types.ObjectId(idUser)}
+                },
+                {
+                    
+                    members : {$eq: new mongoose.Types.ObjectId(idUser)}
+                    
+                }
+            ]
+        }).populate('manager');
+
+        return listPlan;
+    }
+
     
-       
 }
 
 export default PlanService;

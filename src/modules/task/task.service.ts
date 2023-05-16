@@ -1,11 +1,12 @@
 import { HttpException } from "@core/exceptions";
 import TaskSchema from "./task.model"
 import CreateTaskDto from "./dtos/addtask.dto";
-import ITask from "./task.interface";
+import ITask, { IMember } from "./task.interface";
 import { isEmptyObject } from "@core/utils";
 import { PlanSchema } from "@modules/plan";
 import { UserSchema } from "@modules/users";
 import { ListTaskSchema } from "@modules/listTask";
+import AddMemberDto from "@modules/plan/dtos/addMember.dto";
 
 
 class TaskService{
@@ -60,6 +61,42 @@ class TaskService{
 
         return task;
     }
+
+    public async addMember(idLead: string, idTask: string, idPlan: string,  model:AddMemberDto) : Promise<ITask>{
+        if(isEmptyObject(model)){
+            throw new HttpException(400, 'Model is empty');
+        }
+        
+        const plan = await this.planSchema.findById(idPlan).exec();
+        const task = await this.taskSchema.findById(idTask).exec();
+        const user = await this.userSchema.findOne({email: model.email}).exec();
+        
+        if(!task){
+            throw new HttpException(409, 'Invalid id task');
+        }
+
+        if(!plan){
+            throw new HttpException(409, 'Invalid id plan');
+        }
+
+        if(!user){
+            throw new HttpException(409, 'Invalid member')
+        }
+
+        if(plan.manager != idLead){
+            throw new HttpException(400, 'You are not allowed to add member');
+        }
+
+        if(!user){
+            throw new HttpException(409, 'User is not found');
+        }
+
+        task.members.push(user._id);
+
+        return await task.save();
+    }
+
+    
 
 }
 

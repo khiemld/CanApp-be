@@ -1,11 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import CreateTaskDto from "./dtos/addtask.dto";
 import TaskService from "./task.service";
+import { isEmptyObject } from "@core/utils";
+import AddMemberDto from "@modules/plan/dtos/addMember.dto";
+import { HttpException } from "@core/exceptions";
+import { IPlan, PlanSchema } from "@modules/plan";
+import { UserSchema } from "@modules/users";
 
 
 
 export default class TaskController{
     private listTaskService = new TaskService();
+    private planSchema = PlanSchema;
+    private userSchema = UserSchema;
 
     public addTask = async(req: Request, res: Response, next: NextFunction) => {
         try{
@@ -39,4 +46,24 @@ export default class TaskController{
             next(error);
         }
     }
+
+    public addMember = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const model : AddMemberDto = req.body;
+            const planId : string = req.params.plan_id;
+            const userId : string = req.params.user_id;
+            const taskId : string = req.params.task_id;
+            let task = await this.listTaskService.addMember(userId, taskId, planId, model);
+            res.status(201).json({
+                error: false,
+                message: 'Add Member Successfully',
+                task: task
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
+
 }

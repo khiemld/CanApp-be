@@ -27,5 +27,8 @@ export default class TaskRoute implements Route{
 
         //Get task by  id
         this.router.get(this.path + '/:id_task', this.taskController.getTaskById);
+
+        //Add member to task
+        this.router.put(this.path +'/members/:user_id/:plan_id/:task_id', this.taskController.addMember);
     }
 }

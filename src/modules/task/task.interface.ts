@@ -8,16 +8,11 @@ export default interface ITask{
     column: string;
     begin_time: string;
     end_time:string;
-    members: IMember;
+    members: IMember[];
     index: number;
     active: boolean;
 }
 
-export interface ICategory{
-    name: string;
-    index: number;
-}
-
 export interface IMember{
-    userId: String;
+    userId: string;
 }

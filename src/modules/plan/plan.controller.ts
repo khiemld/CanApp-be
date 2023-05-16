@@ -129,5 +129,20 @@ export default class PlanController{
         
     }
 
+    public getUserPlan = async(req: Request, res: Response, next: NextFunction) => {
+        try{
+            const userId : string = req.params.user_id;
+            let plans = this.planService.getUserPlan(userId);
+            res.status(201).json({
+                error: false,
+                message: 'Get User\'s plan  Successfully',
+                plans: plans
+            })
+        }
+        catch(error){
+            next(error)
+        }
+    }
+
 
 }

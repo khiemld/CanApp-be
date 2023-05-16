@@ -40,5 +40,8 @@ export default class PlanRoute implements Route{
 
         //Move Col
         this.router.put(this.path + 'move', this.planController.moveCol);
+
+        //Get user plan
+        this.router.get(this.path + '/user-plan/:user_id', this.planController.getUserPlan);
     }
 }

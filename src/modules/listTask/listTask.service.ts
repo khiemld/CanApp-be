@@ -100,6 +100,7 @@ class ListTaskService{
             //Tạo card mới có thông tin card hiện tại
             const newTask = new TaskSchema(
                 {
+                _id: idTask,
                  title: task.title,
                  plan: task.plan,
                  column: idToCol,
@@ -107,16 +108,18 @@ class ListTaskService{
                 }
             );
                
+            await this.taskSchema.findByIdAndDelete(idTask).exec();
+            
             newTask.save();
 
-            console.log("New Task: " + newTask._id + " name: " + task.title + " index: " + task.index);
+            
             
             if(!newTask){
                 throw new HttpException(409, 'New Task not found')
             }
             
 
-            await this.taskSchema.findByIdAndDelete(idTask).exec();
+           
 
 
             toCol.tasks.splice(indexMove, 0, {taskId: newTask._id.toHexString()});
@@ -160,13 +163,15 @@ class ListTaskService{
 
             const newTask = new TaskSchema(
                 {
+                 _id: idTask,
                  title: task.title,
                  plan: task.plan,
                  column: idFromCol,
                  index: task.index
                 }
             );
-               
+            await this.taskSchema.findByIdAndDelete(idTask).exec();
+
             newTask.save();
 
             console.log("New Task: " + newTask._id + " name: " + task.title + " index: " + task.index);
@@ -175,8 +180,7 @@ class ListTaskService{
                 throw new HttpException(409, 'New Task not found')
             }
             
-            await this.taskSchema.findByIdAndDelete(idTask).exec();
-
+            
 
             fromCol.tasks.splice(indexMove, 0, {taskId: newTask._id.toHexString()});
             
