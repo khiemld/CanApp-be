@@ -39,5 +39,8 @@ export default class UserRoute implements Route{
         //Upload Image
         const upload = multer({ storage: multer.memoryStorage() });
         this.router.post(this.path + '/upload/:user_id', upload.single("avatar"),  this.usersController.uploadImage);
+
+        //Reset password
+        this.router.put(this.path + '/reset/:user_id', this.usersController.resetPassword);
     }
 }

@@ -9,6 +9,7 @@ import IUser from "./user.interface";
 import { permittedCrossDomainPolicies } from "helmet";
 import jwt from 'jsonwebtoken';
 import UpdateDto from "./dtos/update.dto";
+import ResetPassDto from "./dtos/resetpassword.dto";
 
 
 class  UserService{
@@ -27,11 +28,6 @@ class  UserService{
             throw new HttpException(409, `Your email ${model.email} already exist`)
         }
 
-        const avatar = gravatar.url(model.email, {
-            size: '200',
-            rating: 'g',
-            default: 'mm',
-        });
 
         const salt = await bcryptjs.genSalt(10);
 
@@ -39,8 +35,7 @@ class  UserService{
 
         const createdUser :  IUser = await this.userSchema.create({
             ...model,
-            password: hashedPassword,
-            avatar: avatar,
+            password: hashedPassword
         });
 
         return this.createToken(createdUser);
@@ -139,6 +134,36 @@ class  UserService{
         return{
             token: jwt.sign(dataInToken, secret, {expiresIn: expireIn}),
         }
+    }
+
+    public async resetPassword(userId: string, model: ResetPassDto) : Promise<IUser>{
+        const user = await this.userSchema.findById(userId).exec();
+
+        if(!user){
+            throw new HttpException(409, 'User not found');
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const newHashedPassword = await bcryptjs.hash(model.newPass!, salt);
+
+    
+        const isMatch = bcryptjs.compareSync(model.oldPass, user.password);
+        if(isMatch){
+          if(model.newPass !== model.oldPass){
+                await this.userSchema.findByIdAndUpdate(
+                        userId,
+                        {password: newHashedPassword},
+                        { new: true }).exec();
+          }
+          else{
+            throw new HttpException(409, 'New password and old password is the same');
+          }
+          
+        }
+        else{
+            throw new HttpException(409, 'Old Password is not correct');
+        }
+        return user;
     }
 
     

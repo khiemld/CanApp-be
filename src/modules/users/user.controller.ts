@@ -6,6 +6,7 @@ import { Logger } from "@core/utils";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import multer from "multer";
 import { HttpException } from "@core/exceptions";
+import ResetPassDto from "./dtos/resetpassword.dto";
 
 export default class UsersController{
     private userService = new UserService();
@@ -91,7 +92,7 @@ export default class UsersController{
             const downloadURL = await getDownloadURL(snapshot.ref);
             
             const userId = req.params.user_id;
-            
+        
             let user = await this.userService.uploadImage(userId, downloadURL);
             res.status(200).json({
                 error: false,
@@ -100,6 +101,22 @@ export default class UsersController{
             });
         } catch (error) {
            next(error)
+        }
+    }
+
+    public resetPassword = async(req: Request, res: Response, next: NextFunction) => {
+        try{
+            const model : ResetPassDto = req.body;
+            const userId = req.params.user_id;
+            let user = await this.userService.resetPassword(userId, model);
+            res.status(201).json({
+                error: false,
+                message: "Reset password successfully",
+                user: user
+            })
+        }
+        catch(error){
+            next(error);
         }
     }
 }
