@@ -146,16 +146,17 @@ class PlanService{
                 }
             },
             
-       ]);
+       ]).exec();
 
        result[0].columns.forEach((column: {_id: any; tasks: any; }) => {
-            column.tasks = result[0].tasks.filter((c: { column: any; }) => c.column.toString() === column._id.toString())
+            column.tasks = result[0].tasks.filter((c: { column: any; }) => c.column.toString() === column._id.toString());
        });
 
        delete result[0].tasks
        delete result[0].list
        delete result[0].__v
        return result[0];
+       
     }
 
 

@@ -41,6 +41,6 @@ const TaskSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
-});
+},  { versionKey: false });
 
 export default mongoose.model<ITask & mongoose.Document>('task', TaskSchema);

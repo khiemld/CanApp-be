@@ -6,7 +6,7 @@ export default interface ITask{
     description: string;
     plan: string;
     column: string;
-    begin_Time: string;
+    begin_time: string;
     end_time:string;
     members: IMember;
     index: number;

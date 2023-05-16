@@ -27,6 +27,6 @@ const ListTaskSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
-});
+}, { versionKey: false });
 
 export default mongoose.model<IListTask & mongoose.Document>('listTask', ListTaskSchema);

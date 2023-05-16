@@ -44,7 +44,7 @@ class TaskService{
 
         await newTask.save();
 
-        list.tasks.unshift(newTask._id);
+        list.tasks.push({taskId : newTask._id});
         
         await list.save();
 
