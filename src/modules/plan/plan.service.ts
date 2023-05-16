@@ -1,15 +1,14 @@
 import PlanSchema from "./plan.model"
 import CreatePlanDto from "./dtos/createPlan.dto"
-import IPlan, { IMember } from "./plan.interface";
+import IPlan, { IList, IMember } from "./plan.interface";
 import { isEmptyObject } from "@core/utils";
 import { HttpException } from "@core/exceptions";
 import UserSchema from '@modules/users/user.model'
 import UserService from '@modules/users/user.service'
 import AddMemberDto from "./dtos/addMember.dto";
-import { IUser } from "@modules/users";
 import mongoose from "mongoose"; 
-import { ListTaskSchema } from "@modules/listTask";
-import { ITask, TaskSchema } from "@modules/task";
+import { IListTask, ListTaskSchema } from "@modules/listTask";
+import { TaskSchema } from "@modules/task";
 
 class PlanService{
     public planSchema = PlanSchema;
@@ -188,6 +187,76 @@ class PlanService{
         return await plan.save();
     }
 
+    public async moveColumn(idCol: string, idPlan: string, indexMove: number) : Promise<IListTask>{
+        const col = await this.listTaskSchema.findById(idCol);
+        const plan = await this.planSchema.findById(idPlan);
+
+        if(!col){
+            throw new HttpException(409, 'Invalid column');
+        }
+
+        if(!plan){
+            throw new HttpException(409, 'Invalid plan');
+        }
+
+        const idUpdate = new mongoose.Types.ObjectId(idCol);
+        const indexCol = this.findIndexByObject(plan.list, idUpdate);
+
+        await this.planSchema.findByIdAndUpdate(
+            idCol,
+            {list: plan.list.splice(indexCol, 1)},
+            {new: true}
+        ).exec();
+
+        const newCol = new ListTaskSchema(
+            {
+                name: col.name,
+                plan: col.plan,
+                tasks: col.tasks,
+                index: col.index
+            }
+        );
+
+        newCol.save();
+
+        if(!newCol){
+            throw new HttpException(409, 'Col not found');
+        }
+
+        await this.listTaskSchema.findByIdAndDelete(idCol).exec();
+
+        plan.list.splice(indexMove, 0, {listId: newCol._id.toString()});
+        plan.save();
+
+        const arrayLength : number = plan.list.length;
+        for(var i = 0; i < arrayLength; i++){
+            await this.planSchema.findByIdAndUpdate(
+                plan.list[i].listId,
+                {index: i,},
+                {new: true}
+            ).exec();
+        }
+ 
+        return newCol;
+    }
+
+    private  findIndexByObject(array: IList[], searchObject: Object) {
+        for (var i = 0; i < array.length; i++) {
+          var currentObject = array[i];
+          if (this.compareObjects(currentObject, new mongoose.Types.ObjectId(searchObject.toString()))) {
+            return i;
+          }
+        }
+        return -1;
+      }
+      
+    private  compareObjects(object1 : Object, object2 : Object) {
+        // Kiểm tra các thuộc tính của đối tượng để so sánh
+        
+        const flag : String = object1.toString();
+
+        return flag.includes(object2.toString());
+    }
     
        
 }

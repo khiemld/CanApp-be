@@ -24,4 +24,19 @@ export default class TaskController{
             next(error);
         }
     }
+
+    public getTaskById = async(req: Request, res: Response, next: NextFunction) => {
+        try{
+            const taskId : string = req.params.id_task;
+            let task = await this.listTaskService.getTaskById(taskId);
+            res.status(201).json({
+                error: false,
+                message: 'Get Task Successfully',
+                task: task
+            })
+        }   
+        catch(error){
+            next(error);
+        }
+    }
 }

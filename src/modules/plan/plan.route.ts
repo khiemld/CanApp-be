@@ -38,6 +38,7 @@ export default class PlanRoute implements Route{
         //Add Member
         this.router.put(this.path +'/members/:user_id/:plan_id', this.planController.addMember);
 
-
+        //Move Col
+        this.router.put(this.path + 'move', this.planController.moveCol);
     }
 }

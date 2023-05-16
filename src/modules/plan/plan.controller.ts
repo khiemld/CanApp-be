@@ -2,6 +2,9 @@ import PlanService from './plan.service'
 import CreatePlanDto from './dtos/createPlan.dto';
 import { NextFunction, Request, Response } from "express";
 import AddMemberDto from './dtos/addMember.dto';
+import MoveColDto from './dtos/moveCol.dto';
+import { isEmptyObject } from '@core/utils';
+import { HttpException } from '@core/exceptions';
 
 export default class PlanController{
 
@@ -102,7 +105,29 @@ export default class PlanController{
         }
     }
 
+    public moveCol = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const model : MoveColDto = req.body;
 
+            if(isEmptyObject(model)){
+                throw new HttpException(409, 'Model is empty');
+            }
+
+            const indexMove : number = model.indexMove;
+            const idCol : string = model.idCol;
+            const idPlan : string = model.idPlan;
+            let col = await this.planService.moveColumn(idCol, idPlan, indexMove);
+            res.status(201).json({
+                error: false,
+                message: 'Move Column Successfully',
+                column: col
+            }) 
+        }
+        catch(error){
+            next(error);
+        }
+        
+    }
 
 
 }

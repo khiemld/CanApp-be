@@ -22,7 +22,10 @@ export default class TaskRoute implements Route{
 
     private initializeRoutes(){
 
-        //Add user
+        //Add task
         this.router.post(this.path + '/add/:user_id/:plan_id/:list_id', this.taskController.addTask);
+
+        //Get task by  id
+        this.router.get(this.path + '/:id_task', this.taskController.getTaskById);
     }
 }

@@ -51,6 +51,16 @@ class TaskService{
         return newTask;
     }
 
+    public async getTaskById(idTask: string) : Promise<ITask>{
+        const task = await this.taskSchema.findById(idTask).exec();
+
+        if(!task){
+            throw new HttpException(404, `Task is not exits`)
+        }
+
+        return task;
+    }
+
 }
 
 export default TaskService;
