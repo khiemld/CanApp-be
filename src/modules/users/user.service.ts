@@ -10,6 +10,7 @@ import { permittedCrossDomainPolicies } from "helmet";
 import jwt from 'jsonwebtoken';
 import UpdateDto from "./dtos/update.dto";
 import ResetPassDto from "./dtos/resetpassword.dto";
+import ForgotPassDto from "./dtos/forgotpassword.dto";
 
 
 class  UserService{
@@ -164,6 +165,32 @@ class  UserService{
             throw new HttpException(409, 'Old Password is not correct');
         }
         return user;
+    }
+
+
+    public async forgetPassword(userId: string, model: ForgotPassDto) : Promise<IUser>{
+        const user = await this.userSchema.findById(userId).exec();
+
+        if(!user){
+            throw new HttpException(409, 'User not found');
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const newHashedPassword = await bcryptjs.hash(model.newPass!, salt);
+
+    
+       
+      
+        const newUser = await this.userSchema.findByIdAndUpdate(
+                userId,
+                {password: newHashedPassword},
+                { new: true }).exec();
+            
+        if(!newUser){
+            throw new HttpException(409, 'Can not update user')
+        }
+        
+        return newUser;
     }
 
     
