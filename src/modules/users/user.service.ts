@@ -181,10 +181,7 @@ class  UserService{
 
         const salt = await bcryptjs.genSalt(10);
         const newHashedPassword = await bcryptjs.hash(model.newPass!, salt);
-
-
-
-
+        
         const newUser = await this.userSchema.findByIdAndUpdate(
                 userId,
                 {password: newHashedPassword},

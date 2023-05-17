@@ -105,9 +105,9 @@ class TaskService{
             throw new HttpException(409, 'Invalid Id Plan');
         }
 
-        if(plan.manager !== new mongoose.Types.ObjectId(idLead.toString()).toString()){
-            throw new HttpException(409, 'You are not allow to update task');
-        }
+        // if(plan.manager !== new mongoose.Types.ObjectId(idLead.toString()).toString()){
+        //     throw new HttpException(409, 'You are not allow to update task');
+        // }
 
         const newTask = await this.taskSchema.findByIdAndUpdate(
             idTask,

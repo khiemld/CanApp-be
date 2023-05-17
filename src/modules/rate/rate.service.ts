@@ -7,7 +7,9 @@ import { RateSchema } from ".";
 
 
 class RateService{
-    private rateSchema = RateSchema ;
+    private rateSchema = RateSchema;
+
+
     
     public async addRate(memberId: string, judgeId: string, model: AddRateDto){
         if(isEmptyObject(model)){
@@ -19,6 +21,8 @@ class RateService{
             judge: judgeId,
             ...model,
         });
+
+        
 
         return (await newRate).save();
 

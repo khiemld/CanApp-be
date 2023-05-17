@@ -72,27 +72,21 @@ class PlanService{
         if(!plan){
             throw new  HttpException(400, 'Plan does not exit');
         }
-
-        let updateGroup;
-
-        if(plan.manager === idLead){
-            const groupFields = {...CreatePlanDto};
-            updateGroup = await PlanSchema.findByIdAndUpdate(
-                {_id: idProject},
-                {$set: groupFields},
-                {new: true}
-            ).exec();
+    
+        const updateGroup = await PlanSchema.findByIdAndUpdate(
+            idProject,
+            {name: model.name,
+            description: model.description,
+            beginTime: model.start_date,
+            endTime: model.end_date},
+            {new: true}
+        ).exec();
            
-        }
-        else{
-            throw new HttpException(403, 'You are not allowed to block plan');
-        }
-
         if(!updateGroup){
             throw new HttpException(400, 'Group update is not successfully')
         }
 
-        return updateGroup;
+        return await updateGroup.save();
     }
 
     public async getAllPlans() : Promise<IPlan[]>{
@@ -275,6 +269,8 @@ class PlanService{
   
 
     }
+
+   
 }
 
 export default PlanService;
