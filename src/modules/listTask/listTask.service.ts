@@ -104,6 +104,10 @@ class ListTaskService{
                  title: task.title,
                  plan: task.plan,
                  column: idToCol,
+                 description: task.description,
+                 beginTime: task.begin_time,
+                 endTime: task.end_time,
+                 members: task.members,
                  index: task.index
                 }
             );
@@ -163,11 +167,15 @@ class ListTaskService{
 
             const newTask = new TaskSchema(
                 {
-                 _id: idTask,
-                 title: task.title,
-                 plan: task.plan,
-                 column: idFromCol,
-                 index: task.index
+                    _id: idTask,
+                    title: task.title,
+                    plan: task.plan,
+                    column: idFromCol,
+                    description: task.description,
+                    beginTime: task.begin_time,
+                    endTime: task.end_time,
+                    members: task.members,
+                    index: task.index
                 }
             );
             await this.taskSchema.findByIdAndDelete(idTask).exec();
