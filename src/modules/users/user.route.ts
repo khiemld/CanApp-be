@@ -42,8 +42,5 @@ export default class UserRoute implements Route{
 
         //Reset password
         this.router.put(this.path + '/reset/:user_id', this.usersController.resetPassword);
-
-        //Forgot password
-        this.router.put(this.path + '/forgot/:user_id', this.usersController.forgotPassword);
     }
 }

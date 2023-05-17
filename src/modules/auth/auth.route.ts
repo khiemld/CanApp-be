@@ -1,7 +1,7 @@
 import { Route } from "@core/interface";
 import { Router } from "express";
 import AuthController from "./auth.controller";
-import { authMiddleware } from "@core/middleware";
+//import { authMiddleware } from "@core/middleware";
 
 
 
@@ -19,6 +19,6 @@ export default class AuthRoute implements Route{
 
     private initializeRoutes(){
         this.router.post(this.path, this.authController.login);
-        this.router.get(this.path, authMiddleware,this.authController.getCurrentLoginUser);
+        //this.router.get(this.path /*authMiddleware*/,this.authController.getCurrentLoginUser);
     }
 }

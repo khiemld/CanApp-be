@@ -9,6 +9,7 @@ import AddMemberDto from "./dtos/addMember.dto";
 import mongoose from "mongoose"; 
 import { IListTask, ListTaskSchema } from "@modules/listTask";
 import { TaskSchema } from "@modules/task";
+import { JsonObject } from "swagger-ui-express";
 
 class PlanService{
     public planSchema = PlanSchema;
@@ -259,24 +260,21 @@ class PlanService{
     }
 
 
-    public async getUserPlan(idUser : string) : Promise<IPlan[]>{
-        const listPlan = await this.planSchema.find({
-            $or: [
-                {
-                    manager: {$eq: new mongoose.Types.ObjectId(idUser)}
-                },
-                {
-                    
-                    members : {$eq: new mongoose.Types.ObjectId(idUser)}
-                    
-                }
-            ]
-        }).populate('manager');
+    public async getUserPlan(idUser : string) : Promise<Object>{
+        console.log(new mongoose.Types.ObjectId(idUser.toString()));
+        const memberList : any[]= [new mongoose.Types.ObjectId(idUser.toString())]
 
-        return listPlan;
+
+        const plans = await this.planSchema.find(
+        {
+            $or:[ {manager: new mongoose.Types.ObjectId(idUser.toString())}, {members: {$elemMatch: {'_id': new mongoose.Types.ObjectId(idUser.toString())}}}]
+        }
+        ).populate('manager').exec();
+
+       return plans;
+  
+
     }
-
-    
 }
 
 export default PlanService;

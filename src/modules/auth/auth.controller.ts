@@ -27,14 +27,14 @@ export default class AuthController{
         }
     };
 
-    public getCurrentLoginUser = async (req: Request, res: Response, next: NextFunction)=>{
-        try{
-            const userId= req.user.id;
-            const user: IUser= await this.authService.getCurrentLoginUser(userId);
-            res.status(201).json(user);
-        }
-        catch(error){
-            next(error);
-        }
-    };
+    // public getCurrentLoginUser = async (req: Request, res: Response, next: NextFunction)=>{
+    //     try{
+    //         const userId= req.user.id;
+    //         const user: IUser= await this.authService.getCurrentLoginUser(userId);
+    //         res.status(201).json(user);
+    //     }
+    //     catch(error){
+    //         next(error);
+    //     }
+    // };
 }

@@ -131,12 +131,12 @@ export default class PlanController{
 
     public getUserPlan = async(req: Request, res: Response, next: NextFunction) => {
         try{
-            const userId : string = req.params.user_id;
-            let plans = this.planService.getUserPlan(userId);
+            const user_id : string = req.params.user_id;
+            let plan = await this.planService.getUserPlan(user_id);
             res.status(201).json({
-                error: false,
-                message: 'Get User\'s plan  Successfully',
-                plans: plans
+              error: false,
+              message: 'Get plan successfully',
+              plan: plan  
             })
         }
         catch(error){
