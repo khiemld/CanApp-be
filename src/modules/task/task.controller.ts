@@ -6,6 +6,8 @@ import AddMemberDto from "@modules/plan/dtos/addMember.dto";
 import { HttpException } from "@core/exceptions";
 import { IPlan, PlanSchema } from "@modules/plan";
 import { UserSchema } from "@modules/users";
+import { CustomAggregationExpressionOperatorReturningAny } from "mongoose";
+import UpdateTaskDto from "./dtos/update.dto";
 
 
 
@@ -65,5 +67,22 @@ export default class TaskController{
         }
     }
 
+    public updateTask = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const model : UpdateTaskDto = req.body;
+            const planId : string = req.params.plan_id;
+            const userId : string = req.params.user_id;
+            const taskId : string = req.params.task_id;
+            let task = await this.listTaskService.updateTask(taskId, userId, planId, model);
+            res.status(201).json({
+                error: false,
+                message: 'Add Member Successfully',
+                task: task
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
 
 }

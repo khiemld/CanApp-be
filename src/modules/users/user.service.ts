@@ -11,12 +11,13 @@ import jwt from 'jsonwebtoken';
 import UpdateDto from "./dtos/update.dto";
 import ResetPassDto from "./dtos/resetpassword.dto";
 import ForgotPassDto from "./dtos/forgotpass.dto";
+import IProfile from "@modules/profile/profile.interface";
+import { ProfileSchema } from "@modules/profile";
 
 
 class  UserService{
     public userSchema = UserSchema;
-
-
+    public profileSchema = ProfileSchema;
 
     public async createUser(model:RegisterDto) : Promise<TokenData>{
         if(isEmptyObject(model)){
@@ -37,6 +38,10 @@ class  UserService{
         const createdUser :  IUser = await this.userSchema.create({
             ...model,
             password: hashedPassword
+        });
+
+        await this.profileSchema.create({
+            user: createdUser._id
         });
 
         return this.createToken(createdUser);

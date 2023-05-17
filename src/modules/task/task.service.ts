@@ -7,6 +7,8 @@ import { PlanSchema } from "@modules/plan";
 import { UserSchema } from "@modules/users";
 import { ListTaskSchema } from "@modules/listTask";
 import AddMemberDto from "@modules/plan/dtos/addMember.dto";
+import mongoose from "mongoose";
+import UpdateTaskDto from "./dtos/update.dto";
 
 
 class TaskService{
@@ -94,6 +96,34 @@ class TaskService{
         task.members.push(user._id);
 
         return await task.save();
+    }
+
+    public async updateTask(idTask: string, idLead: string, idPlan: string, model: UpdateTaskDto) : Promise<ITask>{
+        const plan = await  this.planSchema.findById(idPlan).exec();
+
+        if(!plan){
+            throw new HttpException(409, 'Invalid Id Plan');
+        }
+
+        if(plan.manager !== new mongoose.Types.ObjectId(idLead.toString()).toString()){
+            throw new HttpException(409, 'You are not allow to update task');
+        }
+
+        const newTask = await this.taskSchema.findByIdAndUpdate(
+            idTask,
+            {
+                description: model.description,
+                beginTime: model.beginTime,
+                endTime: model.endTime
+            },
+            {new: true}
+        ).exec();
+
+        if(!newTask){
+            throw new HttpException(409, 'Task not found');
+        }
+
+        return await newTask.save();
     }
 
     

@@ -1,6 +1,3 @@
-import { IListTask } from "@modules/listTask";
-
-
 
 export default interface IPlan{
     _id: string;
