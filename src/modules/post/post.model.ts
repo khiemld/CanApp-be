@@ -46,7 +46,14 @@ const PostSchema = new mongoose.Schema({
     },
     date: {
         type: String
+    },
+    block: {
+        type: Boolean,
+        default: false
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
-
 });
 export default mongoose.model<IPost & Document>('posts', PostSchema);

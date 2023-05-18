@@ -27,5 +27,8 @@ export default class PostRoute implements Route{
 
         //Get post by id
         this.router.get(this.path + '/:post_id', this.postController.getAllPosts);
+
+        //Update post 
+        this.router.put(this.path + '/update/:user_id/:post_id', this.postController.updatePost);
     }
 }

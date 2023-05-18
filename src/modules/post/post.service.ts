@@ -50,5 +50,26 @@ export default class PostService{
         return post;
     }
 
+    public async updatePost(userId: string, postId: string, postDto: CreatePostDto): Promise<IPost> {
+        
+        const user = await UserSchema.findById(userId).exec();
+
+        if(!user){
+            throw new HttpException(400, 'Invalid id user');
+        }
+
+        const updatePostById = await PostSchema.findByIdAndUpdate(
+          postId,
+          {
+            ...postDto,
+          },
+          { new: true }
+        ).exec();
+
+        if (!updatePostById) throw new HttpException(400, 'Post is not found');
+    
+        return updatePostById;
+      }
+
 
 }

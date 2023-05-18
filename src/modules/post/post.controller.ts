@@ -35,7 +35,7 @@ export default class PostController{
         }
     };
     
-      public getPostById = async (req: Request, res: Response, next: NextFunction) => {
+    public getPostById = async (req: Request, res: Response, next: NextFunction) => {
         try {
           const posyId = req.params.post_id;
           const post: IPost = await this.postService.getPostById(posyId);
@@ -44,4 +44,25 @@ export default class PostController{
           next(error);
         }
     };
+
+    public updatePost = async(req: Request, res: Response, next: NextFunction)=>{
+        try{
+            const model : CreatePostDto = req.body;
+            const userId = req.params.user_id;
+            const postId = req.params.post_id;
+
+            let post = await this.postService.updatePost(userId, postId, model);
+
+            res.status(201).json({
+                error: false,
+                message: 'Update Post successfully',
+                post: post
+            });
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
+    
 }

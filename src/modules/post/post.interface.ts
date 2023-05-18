@@ -7,6 +7,8 @@ export interface IPost{
     comments: IComment[];
     plan: string;
     date: string;
+    block: boolean;
+    active: boolean;
 }
 
 export interface ILike{
