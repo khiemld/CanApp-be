@@ -7,6 +7,7 @@ import AuthRoute from '@modules/auth/auth.route';
 import { PlanRoute } from '@modules/plan';
 import { ListRoute } from '@modules/listTask';
 import { TaskRoute } from '@modules/task';
+import { PostRoute } from '@modules/post';
 
 
 validateEnv();
@@ -17,7 +18,8 @@ const routes = [
     new AuthRoute(),
     new PlanRoute(),
     new ListRoute(),
-    new TaskRoute()]
+    new TaskRoute(),
+    new PostRoute()]
     
 const app = new App(routes);
 
