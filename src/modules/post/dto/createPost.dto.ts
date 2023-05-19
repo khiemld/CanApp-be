@@ -2,9 +2,13 @@ import { IsNotEmpty } from "class-validator";
 
 export default class CreatePostDto {
     @IsNotEmpty()
-    public text : string
+    public text : string;
+
+    @IsNotEmpty()
+    public title: string;
     
-    constructor(text: string){
+    constructor(title: string, text: string){
+        this.title = title;
         this.text = text;
     }
 }

@@ -1,5 +1,6 @@
 export interface IPost{
     user: string;
+    title: string;
     text: string;
     name: string;
     avatar: string;

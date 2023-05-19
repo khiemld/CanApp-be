@@ -1,3 +1,4 @@
+import CreateCommentDto from "./dto/createComment.dto";
 import CreatePostDto from "./dto/createPost.dto";
 import { IPost } from "./post.interface";
 import PostService from "./post.service";
@@ -63,6 +64,56 @@ export default class PostController{
             next(error);
         }
     }
+
+    public addComment = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          const postId = req.params.post_id;
+          const userId = req.params.user_id;
+          const model : CreateCommentDto = req.body;
+    
+          const result = await this.postService.addComment(userId, postId, model);
+          res.status(200).json({
+            error: false,
+            message: 'Comment Successfully',
+            comment: result
+          });
+        } catch (error) {
+          next(error);
+        }
+    };
+
+    public likePost = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const postId = req.params.post_id;
+            const userId = req.params.user_id;
+            let likes = await this.postService.likePost(userId, postId);
+            res.status(201).json({
+              error: false,
+              message: 'You like post',
+              likes: likes
+            });
+        }
+        catch(error){
+          next(error);
+        }
+    }
+
+    public unlikePost = async (req: Request, res: Response, next: NextFunction)=>{
+      try{
+        const postId = req.params.post_id;
+        const userId = req.params.user_id;
+        let likes = await this.postService.unlikePost(userId, postId);
+        res.status(201).json({
+          error: false,
+          message: 'You unlike post',
+          likes: likes
+        });
+      }
+      catch(error){
+        next(error);
+      }
+    }
+
 
     
 }
