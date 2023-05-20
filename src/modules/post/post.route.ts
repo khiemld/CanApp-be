@@ -39,5 +39,8 @@ export default class PostRoute implements Route{
 
         //Unlike post
         this.router.delete(this.path + '/like/:user_id/:post_id', this.postController.unlikePost);
+
+        //Get plan's post
+        this.router.get(this.path + '/plan/:plan_id', this.postController.planPost);
     }
 }

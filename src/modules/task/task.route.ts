@@ -33,5 +33,8 @@ export default class TaskRoute implements Route{
 
         //Update Task
         this.router.put(this.path +'/update/:user_id/:plan_id/:task_id', this.taskController.updateTask);
+
+        //Block Task
+        this.router.put(this.path +'/block/:user_id/:plan_id/:task_id', this.taskController.blockTask);
     }
 }

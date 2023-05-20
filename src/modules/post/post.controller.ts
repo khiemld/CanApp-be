@@ -114,6 +114,17 @@ export default class PostController{
       }
     }
 
+    public planPost = async (req: Request, res: Response, next: NextFunction) => {
+      try{
+          const planId = req.params.plan_id;
+          let posts = await this.postService.getPostPlan(planId);
+          res.status(201).json(posts);
+      } 
+      catch(error){
+          next(error);
+      }
+    }
+
 
     
 }

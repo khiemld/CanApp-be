@@ -8,6 +8,7 @@ import { PlanRoute } from '@modules/plan';
 import { ListRoute } from '@modules/listTask';
 import { TaskRoute } from '@modules/task';
 import { PostRoute } from '@modules/post';
+import RateRoute from '@modules/rate/rate.route';
 
 
 validateEnv();
@@ -19,7 +20,8 @@ const routes = [
     new PlanRoute(),
     new ListRoute(),
     new TaskRoute(),
-    new PostRoute()]
+    new PostRoute(),
+    new RateRoute()]
     
 const app = new App(routes);
 

@@ -85,4 +85,21 @@ export default class TaskController{
         }
     }
 
+    public blockTask = async  (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const userId : string = req.params.user_id;
+            const planId : string = req.params.plan_id;
+            const taskId : string = req.params.task_id;
+            let task = await this.listTaskService.blockTask(userId, planId, taskId);
+            res.status(201).json({
+                error: false,
+                message: 'Block Task Successfully',
+                task: task
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
 }

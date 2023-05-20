@@ -29,6 +29,6 @@ const ProfileSchema = new mongoose.Schema({
             default: 0
         }
     }]
-})
+});
 
 export default mongoose.model<IProfile & mongoose.Document>('profiles', ProfileSchema);

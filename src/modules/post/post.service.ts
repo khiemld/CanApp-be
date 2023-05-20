@@ -6,6 +6,7 @@ import { PostSchema } from ".";
 import { PlanSchema } from "@modules/plan";
 import { getDateNow, isEmptyObject } from "@core/utils";
 import CreateCommentDto from "./dto/createComment.dto";
+import mongoose from "mongoose";
 
 
 export default class PostService{
@@ -49,6 +50,21 @@ export default class PostService{
     public async getPostById(postId: string): Promise<IPost> {
         const post = await PostSchema.findById(postId).exec();
         if (!post) throw new HttpException(404, 'Post is not found');
+       
+
+        // const result = await PlanSchema.aggregate([
+        //     {
+        //       $match : {
+        //         _id: new mongoose.Types.ObjectId(postId)
+        //       }
+        //     },
+        //     {
+        //       $lookup:{
+        //          from: 'users'
+        //       }
+        //     }
+        // ]).exec();
+
         return post;
     }
 
@@ -124,6 +140,14 @@ export default class PostService{
   
       await post.save();
       return post.likes;
+    }
+
+    public async getPostPlan(planId: string) : Promise<IPost[]>{
+        const posts = await PostSchema.find({plan: planId});
+        if(!posts){
+          throw new HttpException(400, 'Post not found');
+        }
+        return posts;
     }
 
 

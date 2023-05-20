@@ -126,6 +126,29 @@ class TaskService{
         return await newTask.save();
     }
 
+    public async blockTask(idLead: string, idPlan: string, idTask: string) : Promise<ITask>{
+        const plan = await this.planSchema.findById(idPlan);
+
+        if(!plan){
+            throw new HttpException(400, 'Invalid Plan Id');
+        }
+
+        const newTask = await this.taskSchema.findByIdAndUpdate(
+            idTask,
+            {
+                active: false
+            },
+            {new: true}
+        ).exec();
+
+        if(!newTask){
+            throw new HttpException(409, 'Task not found');
+        }
+
+        return await newTask.save();
+
+    }
+
     
 
 }
