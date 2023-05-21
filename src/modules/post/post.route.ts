@@ -31,9 +31,6 @@ export default class PostRoute implements Route{
         //Update post 
         this.router.put(this.path + '/update/:user_id/:post_id', this.postController.updatePost);
 
-       
-        
-
         //Like post
         this.router.post(this.path + '/like/:user_id/:post_id', this.postController.likePost);
 
@@ -42,5 +39,8 @@ export default class PostRoute implements Route{
 
         //Get plan's post
         this.router.get(this.path + '/plan/:plan_id', this.postController.planPost);
+
+        //Add comment
+        this.router.post(this.path + '/comment/:user_id/:post_id', this.postController.addComment);
     }
 }
