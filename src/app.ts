@@ -8,13 +8,17 @@ import helmet from "helmet";
 import { Logger } from "@core/utils";
 import { errorMiddleware } from "@core/middleware";
 import bodyParser from "body-parser";
-
-
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import firebase, { initializeApp } from 'firebase/app';
+import config from "./config/firebase.config"
+import { getAnalytics } from "firebase/analytics";
 class App{
     public app: express.Application;
     public port: string | number;
     private production: boolean;
 
+    
     constructor(routes : Route[]){
         this.app = express();
         this.port = process.env.PORT || 5000;
@@ -25,6 +29,13 @@ class App{
         this.initializeMiddleware();
         this.initializeRoutes(routes);
         this.initialMiddlewareError();
+        this.initializeSwagger();
+        this.initializeFireBase();
+    }
+
+
+    private initializeFireBase(){
+        initializeApp(config.firebaseConfig);
     }
 
     private initializeRoutes(routes : Route[]){
@@ -32,7 +43,7 @@ class App{
             this.app.use('/', route.router);
         })
     }
-
+    
     private initializeMiddleware(){
         if(this.production){
             this.app.use(hpp());
@@ -75,6 +86,12 @@ class App{
         this.app.listen(this.port, ()=>{
             Logger.info(`Server is listening on port ${this.port}`);
         });
+    }
+
+    private initializeSwagger(){
+        const swaggerDocument = YAML.load('./src/swagger.yaml');
+
+        this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 }
 
