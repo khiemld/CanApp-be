@@ -102,4 +102,21 @@ export default class TaskController{
         }
     }
 
+    public unblockTask = async  (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const userId : string = req.params.user_id;
+            const planId : string = req.params.plan_id;
+            const taskId : string = req.params.task_id;
+            let task = await this.listTaskService.unblockTask(userId, planId, taskId);
+            res.status(201).json({
+                error: false,
+                message: 'Unblock Task Successfully',
+                task: task
+            })
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
 }

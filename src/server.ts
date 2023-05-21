@@ -9,6 +9,7 @@ import { ListRoute } from '@modules/listTask';
 import { TaskRoute } from '@modules/task';
 import { PostRoute } from '@modules/post';
 import RateRoute from '@modules/rate/rate.route';
+import { ProfileRoute } from '@modules/profile';
 
 
 validateEnv();
@@ -21,7 +22,8 @@ const routes = [
     new ListRoute(),
     new TaskRoute(),
     new PostRoute(),
-    new RateRoute()]
+    new RateRoute(),
+    new ProfileRoute()]
     
 const app = new App(routes);
 
