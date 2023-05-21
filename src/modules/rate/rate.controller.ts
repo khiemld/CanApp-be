@@ -29,6 +29,15 @@ export default class RateController{
         }
     }
 
-    
+    public getRatesByPlanId =async (req: Request, res: Response, next: NextFunction) => {
+        try{
 
+            const planId = req.params.plan_id;
+            let rates = await new RateService().getRateByPlanId(planId);
+            res.status(201).json(rates);
+        }
+        catch(error){
+            next(error);
+        }
+    }
 }

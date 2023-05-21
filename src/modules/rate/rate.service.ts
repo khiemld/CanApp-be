@@ -5,6 +5,7 @@ import { IRate, RateSchema } from ".";
 import { ProfileSchema } from "@modules/profile";
 import { IRateList } from "@modules/profile/profile.interface";
 import mongoose from "mongoose";
+import { PlanSchema } from "@modules/plan";
 
 class RateService {
   private rateSchema = RateSchema;
@@ -62,6 +63,15 @@ class RateService {
     const rates = await this.rateSchema.find().exec();
     return rates;
   }
+
+  public async getRateByPlanId(planId: string){
+    const rates = await RateSchema.find({plan: new mongoose.Types.ObjectId(planId).toHexString()}).exec();
+    if(!rates){
+      throw new HttpException(400, 'Rates by plan id not found');
+    }
+    return rates;
+  }
+  
   
 }
 

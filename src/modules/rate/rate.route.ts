@@ -21,5 +21,8 @@ export default class RateRoute implements Route{
 
         //Get all rate
         this.router.get(this.path, this.rateController.getAllRates);
+
+        //Get rate by plan id
+        this.router.get(this.path + '/:plan_id', this.rateController.getRatesByPlanId);
     }
 }
