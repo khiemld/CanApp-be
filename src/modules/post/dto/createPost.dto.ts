@@ -10,5 +10,6 @@ export default class CreatePostDto {
     constructor(title: string, text: string){
         this.title = title;
         this.text = text;
+        
     }
 }

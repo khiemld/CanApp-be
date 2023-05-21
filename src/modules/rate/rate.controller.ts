@@ -6,10 +6,8 @@ import RateService from "./rate.service";
 export default class RateController{ 
     public createRate = async (req: Request, res: Response, next: NextFunction) => {
         try{
-            const memberId = req.params.member_id;
-            const judgeId = req.params.judge_id;
             const model : AddRateDto = req.body;
-            let rate = await new RateService().addRate(memberId, judgeId, model);
+            let rate = await new RateService().addRate(model);
             res.status(201).json({
                 error: false,
                 message: 'Rate successfully',
@@ -20,4 +18,17 @@ export default class RateController{
             next(error);
         }
     }
+
+    public getAllRates = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            let rates = await new RateService().getAllRate();
+            res.status(201).json(rates);
+        }
+        catch(error){
+            next(error);
+        }
+    }
+
+    
+
 }

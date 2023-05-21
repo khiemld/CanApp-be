@@ -31,8 +31,8 @@ export default class PostRoute implements Route{
         //Update post 
         this.router.put(this.path + '/update/:user_id/:post_id', this.postController.updatePost);
 
-        //Comment post
-        this.router.post(this.path + '/comment/:user_id/:post_id', this.postController.addComment);
+       
+        
 
         //Like post
         this.router.post(this.path + '/like/:user_id/:post_id', this.postController.likePost);

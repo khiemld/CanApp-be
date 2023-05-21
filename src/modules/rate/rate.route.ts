@@ -16,8 +16,10 @@ export default class RateRoute implements Route{
 
 
     private initializeRoutes(){
-        //Add Plan
-        this.router.post(this.path + '/create/:member_id/:judge_id',
-            this.rateController.createRate);
+        //Add Rate
+        this.router.post(this.path + '/add', this.rateController.createRate);
+
+        //Get all rate
+        this.router.get(this.path, this.rateController.getAllRates);
     }
 }

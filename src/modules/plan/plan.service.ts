@@ -256,7 +256,6 @@ class PlanService{
 
     public async getUserPlan(idUser : string) : Promise<Object>{
         console.log(new mongoose.Types.ObjectId(idUser.toString()));
-        const memberList : any[]= [new mongoose.Types.ObjectId(idUser.toString())]
 
 
         const plans = await this.planSchema.find(
